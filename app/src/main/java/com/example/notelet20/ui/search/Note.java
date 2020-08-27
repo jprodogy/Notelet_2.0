@@ -46,9 +46,13 @@ public class Note {
     @Override
     public String toString() {
         return "Note{" +
-                "DocName='" + DocName + '\'' +
+                "Doc" +
+                "Name='" + DocName + '\'' +
                 ", Creator='" + Creator + '\'' +
                 ", Subject='" + Subject + '\'' +
                 '}';
     }
+
+
+
 }

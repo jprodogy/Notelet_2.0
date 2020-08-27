@@ -1,18 +1,22 @@
 package com.example.notelet20.ui.search;
 
 
+
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+
 
 import com.example.notelet20.R;
 import com.example.notelet20.ui.home.HomeFragment;
@@ -21,17 +25,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Field;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -63,8 +58,6 @@ public class SearchListFragment extends ListFragment {
         dataRef = FirebaseDatabase.getInstance().getReference("Users").child(authRef.getCurrentUser().getUid()).child("Documents");
 
         ReadInDatabase();
-
-
     }
 
     @Override
@@ -72,9 +65,12 @@ public class SearchListFragment extends ListFragment {
         b = elements.get(position);
         Log.wtf("MainActivity", elements.get(position).toString());
         mListener.onBodySelected(b);
+
+        FragmentManager fm = this.getFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.nav_host_fragment, new NoteViewerFragment()).addToBackStack(null);
+        transaction.commit();
     }
-
-
 
     @Override
     public void onAttach(Context context) {
@@ -86,6 +82,7 @@ public class SearchListFragment extends ListFragment {
                     context.toString() + " must implement OnBodySelectedListener");
         }
     }
+
     public interface OnBodySelectedListener {
         void onBodySelected(Note b);
     }
@@ -116,10 +113,7 @@ public class SearchListFragment extends ListFragment {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
-
-
     }
-
 
     public void SearchNotes(){
         ArrayList<Note> searchSubjects = new ArrayList<>();

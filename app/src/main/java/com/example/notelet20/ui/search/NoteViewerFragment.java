@@ -1,14 +1,19 @@
-package com.example.notelet20.ui.notepage;
+package com.example.notelet20.ui.search;
 
 import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -19,11 +24,13 @@ import android.view.WindowManager;
 
 import com.example.notelet20.R;
 
+import static com.example.notelet20.NavBarActivity.toolbar;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class NotePageFragment extends Fragment {
+public class NoteViewerFragment extends Fragment {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -110,7 +117,8 @@ public class NotePageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_note_page, container, false);
+        showActionBar();
+        return inflater.inflate(R.layout.fragment_note_viewer, container, false);
     }
 
     @Override
@@ -212,7 +220,6 @@ public class NotePageFragment extends Fragment {
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
-
     }
 
     @Nullable
@@ -224,4 +231,49 @@ public class NotePageFragment extends Fragment {
         }
         return actionBar;
     }
+
+    private void showActionBar() {
+
+        // get the ActionBar from Main Activity
+        final ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        // inflate the customized Action Bar View
+        LayoutInflater inflater = (LayoutInflater) getActivity()
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflater.inflate(R.layout.fragment_actionbar, null);
+
+        if (actionBar != null) {
+            // enable the customized view and disable title
+            actionBar.setDisplayShowCustomEnabled(true);
+            actionBar.setCustomView(v);
+            actionBar.setTitle("Search");
+            // remove Burger Icon
+            toolbar.setNavigationIcon(null);
+
+            // add click listener to the back arrow icon
+            v.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // reverse back the show
+                    actionBar.setDisplayShowCustomEnabled(false);
+                    actionBar.setDisplayShowTitleEnabled(true);
+                    //get the Drawer and DrawerToggle from Main Activity
+                    // set them back as normal
+                    DrawerLayout drawer = getActivity().findViewById(R.id.drawer_layout);
+                    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                            getActivity(), drawer, toolbar, R.string.navigation_drawer_open,
+                            R.string.navigation_drawer_close);
+                    // All that to re-synchronize the Drawer State
+                    toggle.syncState();
+                    // Implement Back Arrow Icon
+                    // so it goes back to previous Fragment
+
+                    getActivity().onBackPressed();
+
+
+                }
+            });
+        }
+    }
+
+
 }

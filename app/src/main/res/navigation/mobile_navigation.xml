@@ -37,8 +37,9 @@
 
     <fragment
         android:id="@+id/nav_search"
-        android:name="com.example.notelet20.ui.search.SearchFragment"
-        android:label="Search"
-        tools:layout="@layout/fragment_search"/>
+        android:name="com.example.notelet20.ui.search.ListPlaceHolderFragment"
+        android:label="Inbox"
+        tools:layout="@layout/fragment_inbox_list" />
+
 
 </navigation>

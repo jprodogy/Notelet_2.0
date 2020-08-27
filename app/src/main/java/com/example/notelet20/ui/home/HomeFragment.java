@@ -16,9 +16,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.notelet20.ui.search.ListPlaceHolderFragment;
 import com.example.notelet20.R;
-import com.example.notelet20.ui.search.SearchFragment;
-import static com.example.notelet20.NavBarActivity.toolbar;
-
 
 
 public class HomeFragment extends Fragment implements SearchView.OnQueryTextListener, View.OnClickListener {
@@ -56,7 +53,7 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         newSearch = s;
         FragmentManager fm = this.getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.nav_host_fragment, new ListPlaceHolderFragment()).addToBackStack(null);
+        transaction.replace(R.id.nav_host_fragment, new ListPlaceHolderFragment());
         transaction.commit();
         return false;
     }
@@ -70,7 +67,7 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     public void onClick(View view) {
         FragmentManager fm = this.getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.nav_host_fragment, new SearchFragment()).addToBackStack(null);
+        transaction.replace(R.id.nav_host_fragment, new ListPlaceHolderFragment()).addToBackStack(null);
 
         transaction.commit();
     }

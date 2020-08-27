@@ -8,13 +8,17 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.notelet20.R;
+
 
 import static com.example.notelet20.NavBarActivity.toolbar;
 
@@ -29,6 +33,9 @@ public class ListPlaceHolderFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    public View v;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -87,15 +94,22 @@ public class ListPlaceHolderFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onPause() {
+        v.setOnClickListener(null);
+        super.onPause();
+    }
+
+
+
     private void showActionBar() {
+        final ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
 
         // get the ActionBar from Main Activity
-        final ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         // inflate the customized Action Bar View
         LayoutInflater inflater = (LayoutInflater) getActivity()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.fragment_actionbar, null);
-
+        v = inflater.inflate(R.layout.fragment_actionbar, null);
         if (actionBar != null) {
             // enable the customized view and disable title
             actionBar.setDisplayShowCustomEnabled(true);
@@ -122,7 +136,10 @@ public class ListPlaceHolderFragment extends Fragment {
                     toggle.syncState();
                     // Implement Back Arrow Icon
                     // so it goes back to previous Fragment
+
                     getActivity().onBackPressed();
+
+
                 }
             });
         }
